@@ -18,6 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="b9j-c6-6JW">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="1" green="0.56176945330000005" blue="0.54672628300000004" alpha="0.68226562499999999" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="oSD-o7-3Qn">
                                 <rect key="frame" x="16" y="36" width="343" height="56"/>
                                 <color key="barTintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -88,17 +92,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="b9j-c6-6JW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7KA-TU-Iqf"/>
                             <constraint firstItem="oSD-o7-3Qn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="BSk-gJ-h62"/>
                             <constraint firstItem="NMe-qa-FqR" firstAttribute="top" secondItem="oSD-o7-3Qn" secondAttribute="bottom" constant="8" id="EIH-F3-0eL"/>
                             <constraint firstItem="oSD-o7-3Qn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" constant="-16" id="OM9-Ug-SF3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="NMe-qa-FqR" secondAttribute="bottom" id="SVW-Ej-KlI"/>
                             <constraint firstItem="oSD-o7-3Qn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="WQR-nL-fm9"/>
                             <constraint firstItem="NMe-qa-FqR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="YrI-68-Tsx"/>
+                            <constraint firstItem="b9j-c6-6JW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fZI-kk-BDj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NMe-qa-FqR" secondAttribute="trailing" constant="24" id="yFo-HO-2IV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="b9j-c6-6JW" id="FpF-wz-fNe"/>
                         <outlet property="pokedexCollectionView" destination="NMe-qa-FqR" id="rPR-MD-4a1"/>
                         <outlet property="pokedexSearchBar" destination="oSD-o7-3Qn" id="8cD-49-HQ4"/>
                     </connections>

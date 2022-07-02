@@ -12,6 +12,9 @@ import UIKit
 class PokedexViewController: UIViewController {
     
     // Mark: Properties
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var pokedexCollectionView: UICollectionView!
     @IBOutlet weak var pokedexSearchBar: UISearchBar!
     
@@ -19,29 +22,39 @@ class PokedexViewController: UIViewController {
     var responseModel: PokedexModel?
     var resultCounter = 0
     var pokemonList = [PokemonModel]()
+    var filteredPokemonList = [PokemonModel]()
+    
     var pokemonImages = [Data]()
+    var filteredPokemonImages = [Data]()
+    
     var lastId = 0
+    var isFiltering: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-//        self.loadPokedexData(url: PokemonAPIUrl.main)
-//        self.setupCollectionView()
-
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.isTranslucent = false
-        
-        navigationItem.title = "Pokedex"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        self.startLoading()
         self.loadPokedexData(url: PokemonAPIUrl.main)
         self.setupCollectionView()
+        self.setupSearchBar()
     }
     
     // Mark: Methods
+    private func startLoading() {
+        self.view.bringSubviewToFront(self.activityIndicator)
+        self.pokedexCollectionView.alpha = 0.4
+        self.activityIndicator.startAnimating()
+    }
+    
+    private func stopLoading() {
+        self.activityIndicator.stopAnimating()
+        self.pokedexCollectionView.alpha = 1
+        self.pokedexCollectionView.isHidden = false
+    }
     
     private func loadPokedexData(url: String?) {
         
@@ -74,7 +87,6 @@ class PokedexViewController: UIViewController {
             
             switch response {
             case .success(let model):
-                print("Y CATCH A POKEMON \(model) \n")
                 
                 DispatchQueue.main.async {
                     if model.id == (self.lastId + 1) {
@@ -95,17 +107,19 @@ class PokedexViewController: UIViewController {
     }
     
     private func loadImageData(url: String) {
-        
+    
         request.getPokemonImage(url: url) { (response) in
             
             switch response {
             case .success(let model):
-                print("Z POKEMON IMAGE \(model)")
                 
                 DispatchQueue.main.async {
                     self.pokemonImages.append(model)
                 }
+                
                 let isToLoadNext: Bool = self.pokemonList.last!.id < self.resultCounter
+                
+                isToLoadNext ? self.startLoading() : self.stopLoading()
                 
                 isToLoadNext ? self.loadPokemonData(id: self.pokemonList.last!.id + 1) :
                     self.pokedexCollectionView.reloadData()
@@ -121,14 +135,29 @@ class PokedexViewController: UIViewController {
     }
 }
 
+extension PokedexViewController: UISearchBarDelegate {
+    private func setupSearchBar() {
+        self.pokedexSearchBar.delegate = self
+        self.pokedexSearchBar.placeholder = "Search for a Pokémon..."
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.isFiltering = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+}
+
 // MARK: Collection View Delegate and Data Source
 extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         
         self.pokedexCollectionView.delegate = self
         self.pokedexCollectionView.dataSource = self
-        
+        self.pokedexCollectionView.isHidden = true
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -143,6 +172,7 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if indexPath.item == resultCounter {
+            self.startLoading()
             loadPokedexData(url: responseModel?.next)
         }
     }
@@ -156,7 +186,6 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
                                 spriteData: pokemonImages[indexPath.row])
             }
             return cell
-                
         } else {
             return UICollectionViewCell()
         }

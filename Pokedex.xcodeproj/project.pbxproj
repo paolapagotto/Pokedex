@@ -171,10 +171,10 @@
 		BBC7AD90286744AA009A8F17 /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
+				BBC7AD91286744AA009A8F17 /* AppDelegate.swift */,
 				BB7BF0E9286748A2002495F1 /* Model */,
 				BB7BF0FB2868641C002495F1 /* View */,
 				BB7BF0F028674CD6002495F1 /* ViewModel */,
-				BBC7AD91286744AA009A8F17 /* AppDelegate.swift */,
 				BB7BF0F728685F02002495F1 /* PokedexViewController.swift */,
 				BBC7AD95286744AA009A8F17 /* Main.storyboard */,
 				BBC7AD9B286744AC009A8F17 /* Assets.xcassets */,
