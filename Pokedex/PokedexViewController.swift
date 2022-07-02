@@ -11,38 +11,64 @@ import UIKit
 
 class PokedexViewController: UIViewController {
     
-    // Mark: Properties
+    // Mark: IBOutlets
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var pokedexCollectionView: UICollectionView!
     @IBOutlet weak var pokedexSearchBar: UISearchBar!
     
+    @IBOutlet weak var pokedexTabBar: UITabBar!
+    
+    
+    // Mark: Properties
     var request = PokedexRequest()
     var responseModel: PokedexModel?
     var resultCounter = 0
     var pokemonList = [PokemonModel]()
-    var pokemonImages = [Data]()
-    var lastId = 0
+    var filteredPokemonList = [PokemonModel]()
     
+    var pokemonImages = [Data]()
+    var filteredPokemonImages = [Data]()
+    
+    var lastId = 0
+    var isFiltering: Bool = false
+    
+    // Mark: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-//        self.loadPokedexData(url: PokemonAPIUrl.main)
-//        self.setupCollectionView()
-
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.isTranslucent = false
-        
-        navigationItem.title = "Pokedex"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        self.startLoading()
         self.loadPokedexData(url: PokemonAPIUrl.main)
         self.setupCollectionView()
+        self.setupSearchBar()
     }
     
-    // Mark: Methods
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "pokemonDetailViewController" {
+            if let destination = segue.destination as? PokemonDetailViewController {
+                destination.pokemon = sender as? PokemonModel
+            }
+        }
+    }
     
+    // Mark: Helper Methods
+    private func startLoading() {
+        self.view.bringSubviewToFront(self.activityIndicator)
+        self.pokedexCollectionView.alpha = 0.4
+        self.activityIndicator.startAnimating()
+    }
+    
+    private func stopLoading() {
+        self.activityIndicator.stopAnimating()
+        self.pokedexCollectionView.alpha = 1
+        self.pokedexCollectionView.isHidden = false
+    }
+    
+    // Mark: Fetch Data
     private func loadPokedexData(url: String?) {
         
         request.gottaCatchEmAll(url: url) { (response) in
@@ -74,7 +100,6 @@ class PokedexViewController: UIViewController {
             
             switch response {
             case .success(let model):
-                print("Y CATCH A POKEMON \(model) \n")
                 
                 DispatchQueue.main.async {
                     if model.id == (self.lastId + 1) {
@@ -95,17 +120,19 @@ class PokedexViewController: UIViewController {
     }
     
     private func loadImageData(url: String) {
-        
+    
         request.getPokemonImage(url: url) { (response) in
             
             switch response {
             case .success(let model):
-                print("Z POKEMON IMAGE \(model)")
                 
                 DispatchQueue.main.async {
                     self.pokemonImages.append(model)
                 }
+                
                 let isToLoadNext: Bool = self.pokemonList.last!.id < self.resultCounter
+                
+                isToLoadNext ? self.startLoading() : self.stopLoading()
                 
                 isToLoadNext ? self.loadPokemonData(id: self.pokemonList.last!.id + 1) :
                     self.pokedexCollectionView.reloadData()
@@ -121,14 +148,44 @@ class PokedexViewController: UIViewController {
     }
 }
 
+extension PokedexViewController: UISearchBarDelegate {
+    private func setupSearchBar() {
+        self.pokedexSearchBar.delegate = self
+        self.pokedexSearchBar.placeholder = "Search for a Pokémon..."
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) { }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || searchBar.text == "" {
+            self.isFiltering = false
+            self.pokedexCollectionView.reloadData()
+            view.endEditing(true)
+            view.resignFirstResponder()
+        } else {
+            self.isFiltering = true
+            guard let query = searchBar.text?.lowercased() else { return }
+            
+            filteredPokemonList = pokemonList.filter { $0.name.range(of: query) != nil }
+            self.pokedexCollectionView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+        view.resignFirstResponder()
+    }
+    
+}
+
 // MARK: Collection View Delegate and Data Source
 extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         
         self.pokedexCollectionView.delegate = self
         self.pokedexCollectionView.dataSource = self
-        
+        self.pokedexCollectionView.isHidden = true
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -143,6 +200,7 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if indexPath.item == resultCounter {
+            self.startLoading()
             loadPokedexData(url: responseModel?.next)
         }
     }
@@ -156,7 +214,6 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
                                 spriteData: pokemonImages[indexPath.row])
             }
             return cell
-                
         } else {
             return UICollectionViewCell()
         }
@@ -165,7 +222,9 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     // TODO: Action after clicking 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let pokemonSelected = pokemonList[indexPath.row]
+        performSegue(withIdentifier: "pokemonDetailViewController",
+                     sender: pokemonSelected)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
