@@ -44,9 +44,10 @@ class ParsePokedex {
         let height = response["height"] as? Int ?? 0
         let weight = response["weight"] as? Int ?? 0
         
-        var type: String = ""
+        var type: PokemonType = .unknown
         if let types = (response["types"] as AnyObject)[0] as? [String: Any] {
-            type = ((types["type"] as AnyObject)["name"] as? String ?? "")
+            let typeString = ((types["type"] as AnyObject)["name"] as? String ?? "")
+            type = PokemonType(rawValue: typeString) ?? .unknown
         }
         
         var attack: Int = 0

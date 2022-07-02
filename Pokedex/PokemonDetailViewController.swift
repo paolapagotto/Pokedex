@@ -51,14 +51,17 @@ class PokemonDetailViewController: UIViewController {
     func updateUI(){
         guard let pokemon = self.pokemon else { return }
         activityIndicator.startAnimating()
-        navigationController?.title = "\(pokemon.name.capitalized ?? "Pokemon")"
+        
+        getPokemonImage(url: pokemon.urlImage)
         
         infoContainer.layer.cornerRadius = 5.0
         imageContainer.layer.cornerRadius = 5.0
         
-        getPokemonImage(url: pokemon.urlImage)
         infoContainer.isHidden = false
         imageContainer.isHidden = false
+        imageContainer.backgroundColor = pokemon.type.getPokemonTypeColor()
+        
+        imageContainer.bringSubviewToFront(pokemonImage)
         
         idLabel.text = "# \(pokemon.id)"
         nameLabel.text = "\(pokemon.name.capitalized)"
