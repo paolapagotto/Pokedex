@@ -27,9 +27,9 @@ class PokemonCollectionViewCell: UICollectionViewCell {
         
         nameLabel.text = model.name.capitalized
         idLabel.text = "#\(model.id)"
+        self.backgroundColor = model.type.getPokemonTypeColor()
         pokemonImageView.image = UIImage(data: data)
     }
-    
 }
 
 

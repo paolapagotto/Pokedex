@@ -52,15 +52,15 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGu-hm-ef7">
                                                     <rect key="frame" x="8" y="124" width="161" height="13.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWB-07-Y9j">
                                                     <rect key="frame" x="0.0" y="140.5" width="177" height="17"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -152,11 +152,18 @@
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tpc-B7-X96">
                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="265.5"/>
                                             </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokemonBackground" translatesAutoresizingMaskIntoConstraints="NO" id="FFm-ny-0rK">
+                                                <rect key="frame" x="12" y="12" width="311" height="241.5"/>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="Tpc-B7-X96" firstAttribute="leading" secondItem="gJQ-d6-Fou" secondAttribute="leading" id="1Q7-89-NAd"/>
+                                            <constraint firstItem="FFm-ny-0rK" firstAttribute="top" secondItem="gJQ-d6-Fou" secondAttribute="top" constant="12" id="8ui-v3-myB"/>
+                                            <constraint firstAttribute="bottom" secondItem="FFm-ny-0rK" secondAttribute="bottom" constant="12" id="HMP-q6-Bhi"/>
                                             <constraint firstItem="Tpc-B7-X96" firstAttribute="top" secondItem="gJQ-d6-Fou" secondAttribute="top" id="Jg4-7B-ZAz"/>
+                                            <constraint firstAttribute="trailing" secondItem="FFm-ny-0rK" secondAttribute="trailing" constant="12" id="X9K-Ks-KAg"/>
+                                            <constraint firstItem="FFm-ny-0rK" firstAttribute="leading" secondItem="gJQ-d6-Fou" secondAttribute="leading" constant="12" id="XGv-fX-yaq"/>
                                             <constraint firstAttribute="trailing" secondItem="Tpc-B7-X96" secondAttribute="trailing" id="XoA-24-qIB"/>
                                             <constraint firstAttribute="bottom" secondItem="Tpc-B7-X96" secondAttribute="bottom" id="koJ-g8-lpD"/>
                                         </constraints>
@@ -281,4 +288,7 @@
             <point key="canvasLocation" x="180" y="108"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pokemonBackground" width="1432" height="892"/>
+    </resources>
 </document>
