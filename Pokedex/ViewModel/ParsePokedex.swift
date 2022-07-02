@@ -44,7 +44,29 @@ class ParsePokedex {
         let height = response["height"] as? Int ?? 0
         let weight = response["weight"] as? Int ?? 0
         
+        var type: String = ""
+        if let types = (response["types"] as AnyObject)[0] as? [String: Any] {
+            type = ((types["type"] as AnyObject)["name"] as? String ?? "")
+        }
+        
+        var attack: Int = 0
+        if let attacks = (response["stats"] as AnyObject)[1] as? [String: Any] {
+            attack = attacks["base_stat"] as? Int ?? 0
+        }
+        
+        var defense: Int = 0
+        if let defenses = (response["stats"] as AnyObject)[2] as? [String: Any] {
+            defense = defenses["base_stat"] as? Int ?? 0
+        }
+        
+        var specialAttack: Int = 0
+        if let specials = (response["stats"] as AnyObject)[3] as? [String: Any] {
+            specialAttack = specials["base_stat"] as? Int ?? 0
+        }
+        
         return PokemonModel(id: id, name: name, urlImage: urlImage,
-                            weight: weight, height: height, type: [])
+                            weight: weight, height: height, type: type,
+                            attack: attack, defense: defense,
+                            specialAttack: specialAttack)
     }
 }

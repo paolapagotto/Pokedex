@@ -17,7 +17,11 @@ struct PokemonModel {
     var weight: Int
     var height: Int
     
-    var type: [String]
+    var type: String
+    
+    var attack: Int
+    var defense: Int
+    var specialAttack: Int
 }
 
 extension PokemonModel {
@@ -30,7 +34,9 @@ extension PokemonModel {
         
         self.weight = 0
         self.height = 0
-        self.type = []
-        
+        self.type = ""
+        self.attack = 0
+        self.defense = 0
+        self.specialAttack = 0
     }
 }

@@ -11,13 +11,16 @@ import UIKit
 
 class PokedexViewController: UIViewController {
     
-    // Mark: Properties
+    // Mark: IBOutlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var pokedexCollectionView: UICollectionView!
     @IBOutlet weak var pokedexSearchBar: UISearchBar!
     
+    @IBOutlet weak var pokedexTabBar: UITabBar!
+    
+    
+    // Mark: Properties
     var request = PokedexRequest()
     var responseModel: PokedexModel?
     var resultCounter = 0
@@ -30,6 +33,7 @@ class PokedexViewController: UIViewController {
     var lastId = 0
     var isFiltering: Bool = false
     
+    // Mark: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -43,7 +47,15 @@ class PokedexViewController: UIViewController {
         self.setupSearchBar()
     }
     
-    // Mark: Methods
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "pokemonDetailViewController" {
+            if let destination = segue.destination as? PokemonDetailViewController {
+                destination.pokemon = sender as? PokemonModel
+            }
+        }
+    }
+    
+    // Mark: Helper Methods
     private func startLoading() {
         self.view.bringSubviewToFront(self.activityIndicator)
         self.pokedexCollectionView.alpha = 0.4
@@ -56,6 +68,7 @@ class PokedexViewController: UIViewController {
         self.pokedexCollectionView.isHidden = false
     }
     
+    // Mark: Fetch Data
     private func loadPokedexData(url: String?) {
         
         request.gottaCatchEmAll(url: url) { (response) in
@@ -141,13 +154,28 @@ extension PokedexViewController: UISearchBarDelegate {
         self.pokedexSearchBar.placeholder = "Search for a Pokémon..."
     }
     
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        self.isFiltering = true
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) { }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || searchBar.text == "" {
+            self.isFiltering = false
+            self.pokedexCollectionView.reloadData()
+            view.endEditing(true)
+            view.resignFirstResponder()
+        } else {
+            self.isFiltering = true
+            guard let query = searchBar.text?.lowercased() else { return }
+            
+            filteredPokemonList = pokemonList.filter { $0.name.range(of: query) != nil }
+            self.pokedexCollectionView.reloadData()
+        }
     }
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
+        view.resignFirstResponder()
     }
+    
 }
 
 // MARK: Collection View Delegate and Data Source
@@ -194,7 +222,9 @@ extension PokedexViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     // TODO: Action after clicking 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let pokemonSelected = pokemonList[indexPath.row]
+        performSegue(withIdentifier: "pokemonDetailViewController",
+                     sender: pokemonSelected)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
