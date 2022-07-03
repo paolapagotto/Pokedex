@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 typealias ParseReponseDict = [String: Any]?
 typealias PokemonSpriteDict = [String: Any]
@@ -34,6 +35,7 @@ class ParsePokedex {
     func parsePokemon(response: ParseReponseDict) -> PokemonModel {
         
         guard let response = response else { return PokemonModel() }
+        let pokemon = Pokemon(context: self.container.viewContext)
         
         let id = response["id"] as? Int ?? 0
         let name = response["name"] as? String ?? ""
@@ -64,6 +66,9 @@ class ParsePokedex {
         if let specials = (response["stats"] as AnyObject)[3] as? [String: Any] {
             specialAttack = specials["base_stat"] as? Int ?? 0
         }
+        
+        
+        
         
         return PokemonModel(id: id, name: name, urlImage: urlImage,
                             weight: weight, height: height, type: type,

@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import CoreData
 
 enum StatusCode: Int {
     case success = 200
@@ -21,6 +22,8 @@ struct PokemonAPIUrl {
 }
 
 class PokedexRequest {
+    
+    var container: NSPersistentContainer!
     
     let alamofireManager: SessionManager = {
         let timeIntervalRange: TimeInterval = 10000
@@ -78,6 +81,7 @@ class PokedexRequest {
     func catchPokemon(id: Int, completion: @escaping (_ response: PokemonResponse) -> Void) {
         
         let url = "\(PokemonAPIUrl.main)\(id)"
+        let pokemon = Pokemon(context: self.container.viewContext)
         
         alamofireManager.request(url, method: .get,
                                  parameters: nil,
@@ -96,6 +100,18 @@ class PokedexRequest {
                     }
                 } else if status == StatusCode.success.rawValue {
                     let model = self.parse.parsePokemon(response: responseData)
+                    
+                    // Save data into CoreData
+                    pokemon.id = Int32(model.id)
+                    pokemon.name = model.name
+                    pokemon.type = model.type.rawValue
+                    pokemon.attack = Int32(model.attack)
+                    pokemon.defense = Int32(model.defense)
+                    pokemon.specialAttack = Int32(model.specialAttack)
+                    pokemon.weight = Int32(model.weight)
+                    pokemon.height = Int32(model.height)
+                    pokemon.imageUrl = model.urlImage
+                    
                     completion(.success(model: model))
                 }
                 
