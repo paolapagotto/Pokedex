@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "pokemonBackground.png"
+      "filename" : "pokemonLogo.png"
     }
   ],
   "info" : {
@@ -11,7 +11,6 @@
   },
   "properties" : {
     "compression-type" : "lossless",
-    "template-rendering-intent" : "template",
     "preserves-vector-representation" : true
   }
 }

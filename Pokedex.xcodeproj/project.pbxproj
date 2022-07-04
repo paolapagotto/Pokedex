@@ -130,9 +130,27 @@
 			path = Enum;
 			sourceTree = "<group>";
 		};
+		BB7B4F2D2873852A000C7969 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BB7BF0F728685F02002495F1 /* PokedexViewController.swift */,
+				BBC9AC792870C42E00A305DD /* PokemonDetailViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		BB7B4F2E2873856E000C7969 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				BBC7AD95286744AA009A8F17 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		BB7BF0E9286748A2002495F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BB356B5D2870F85D00E47021 /* Enum */,
 				BB7BF0EA286748CE002495F1 /* PokedexModel.swift */,
 				BB7BF0EC286749A4002495F1 /* PokemonModel.swift */,
 				BB7BF0EE28674C7C002495F1 /* ServerErrorModel.swift */,
@@ -153,6 +171,8 @@
 		BB7BF0FB2868641C002495F1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				BB7B4F2E2873856E000C7969 /* Storyboard */,
+				BB7B4F2D2873852A000C7969 /* Controller */,
 				BB7BF0F9286861C3002495F1 /* PokemonCollectionViewCell.swift */,
 			);
 			path = View;
@@ -183,16 +203,12 @@
 		BBC7AD90286744AA009A8F17 /* Pokedex */ = {
 			isa = PBXGroup;
 			children = (
+				BBC7AD9B286744AC009A8F17 /* Assets.xcassets */,
 				BBC7AD91286744AA009A8F17 /* AppDelegate.swift */,
-				BB356B5D2870F85D00E47021 /* Enum */,
+				BBC7AD9D286744AC009A8F17 /* LaunchScreen.storyboard */,
 				BB7BF0E9286748A2002495F1 /* Model */,
 				BB7BF0FB2868641C002495F1 /* View */,
 				BB7BF0F028674CD6002495F1 /* ViewModel */,
-				BB7BF0F728685F02002495F1 /* PokedexViewController.swift */,
-				BBC9AC792870C42E00A305DD /* PokemonDetailViewController.swift */,
-				BBC7AD95286744AA009A8F17 /* Main.storyboard */,
-				BBC7AD9B286744AC009A8F17 /* Assets.xcassets */,
-				BBC7AD9D286744AC009A8F17 /* LaunchScreen.storyboard */,
 				BBC7ADA0286744AC009A8F17 /* Info.plist */,
 				BBC7AD98286744AA009A8F17 /* Pokedex.xcdatamodeld */,
 			);
