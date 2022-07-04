@@ -55,19 +55,20 @@ class PokemonDetailViewController: UIViewController {
         getPokemonImage(url: pokemon.urlImage)
         
         infoContainer.layer.cornerRadius = 5.0
-        imageContainer.layer.cornerRadius = 5.0
+        imageContainer.layer.cornerRadius = 72.0
         
         infoContainer.isHidden = false
         imageContainer.isHidden = false
         imageContainer.backgroundColor = pokemon.type.getPokemonTypeColor()
         
         imageContainer.bringSubviewToFront(pokemonImage)
+        view.sendSubviewToBack(infoContainer)
         
         idLabel.text = "# \(pokemon.id)"
         nameLabel.text = "\(pokemon.name.capitalized)"
-        weightLabel.text = "Weight: \(pokemon.weight)"
-        heightLabel.text = "Height: \(pokemon.height)"
-        typeLabel.text = "Type: \(pokemon.type)"
+        weightLabel.text = "Weight: \(pokemon.weight/10) kg"
+        heightLabel.text = "Height: \(pokemon.height/10) m"
+        typeLabel.text = "Type: \(pokemon.type.rawValue.capitalized)"
         attackLabel.text = "Attack: \(pokemon.attack)"
         defenseLabel.text = "Defense: \(pokemon.defense)"
         specialAttackLabel.text = "Special-attack: \(pokemon.specialAttack)"
