@@ -1,5 +1,3 @@
-![Uploading pokemonLogo.png…]()
-
 # Pokedex
 
 Project developed in Swift | Swift version: 4.0 | XCode 10.0
@@ -28,5 +26,8 @@ iOS 9.0+
 ## Settings
 
 The Pokedex target should be used for running the project.
-  
-![Simulator Screen Shot - iPhone 7 Plus - 2022-07-04 at 21 42 42](https://user-images.githubusercontent.com/55468847/177214697-2977b0b8-0059-489e-8941-73fff01f7316.png)
+<br>
+<br>
+<br>
+<br>
+<img width="220" alt="Captura de Tela 2022-07-04 às 21 44 24" src="https://user-images.githubusercontent.com/55468847/177214808-f085f44b-832e-4dcb-8d8a-139085d6dd51.png">
